@@ -1,19 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <el-input placeholder="输入链接" v-model="url" style="margin-right: 5px"/>
+      <el-button @click="handleQrCode" type="primary">生成二维码</el-button>
+    </div>
+    <div>
+      <p style="font-family: 'Rza', Sans-serif; font-size: 24px">Hello World!</p>
+    </div>
+    <div>
+      <el-image v-if="img" :src="img"></el-image>
+      <el-empty v-else description="空"></el-empty>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: {},
+  data() {
+    return {
+      url: "",
+      img: ""
+    };
+  },
+  methods: {
+    handleQrCode() {
+      this.$http.post("http://34.88.203.83:8082/qr/create", {url: this.url})
+          .then((res) => {
+            this.img = res.data.img;
+          })
+    }
+  },
+};
 </script>
 
 <style>

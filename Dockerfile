@@ -1,9 +1,23 @@
-FROM node:16.17.0
-WORKDIR /usr/src/app
-RUN npm install -g serve
-COPY package.json package-lock.json ./
+FROM nginx:alpine
+
+# Install npm and node
+RUN apk add --update npm
+
+# Add bash
+RUN apk add --no-cache bash
+
+WORKDIR /app
+
+COPY package.json ./
+
 RUN npm install
+
 COPY . .
-RUN npm run build
-EXPOSE 8080
-CMD [ "npm", "run start" ]
+
+# # Make our shell script executable
+RUN chmod +x start.sh
+
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+
+CMD ["/bin/bash", "-c", "/app/start.sh && nginx -g 'daemon off;'"]

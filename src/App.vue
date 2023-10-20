@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     handleQrCode() {
-      this.$http.post("https://34.88.203.83:8082/qr/create", {url: this.url})
+      this.$http.post("https://springboot-qrcode-q3lbvrl2ea-uc.a.run.app/qr/create", {url: this.url})
           .then((res) => {
             this.img = res.data.img;
           })
